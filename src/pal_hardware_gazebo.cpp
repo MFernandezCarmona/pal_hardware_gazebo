@@ -360,12 +360,21 @@ void PalHardwareGazebo::readSim(ros::Time time, ros::Duration period)
     ForceTorqueSensorDefinitionPtr& ft = forceTorqueSensorDefinitions_[i];
     gazebo::physics::JointWrench ft_wrench = ft->gazebo_joint->GetForceTorque(0u);
 
-    ft->force[0] = ft_wrench.body2Force.x;
-    ft->force[1] = ft_wrench.body2Force.y;
-    ft->force[2] = ft_wrench.body2Force.z;
-    ft->torque[0] = ft_wrench.body2Torque.x;
-    ft->torque[1] = ft_wrench.body2Torque.y;
-    ft->torque[2] = ft_wrench.body2Torque.z;
+    #if GAZEBO_MAJOR_VERSION < 8
+      ft->force[0] = ft_wrench.body2Force.x;
+      ft->force[1] = ft_wrench.body2Force.y;
+      ft->force[2] = ft_wrench.body2Force.z;
+      ft->torque[0] = ft_wrench.body2Torque.x;
+      ft->torque[1] = ft_wrench.body2Torque.y;
+      ft->torque[2] = ft_wrench.body2Torque.z;
+    #else
+      ft->force[0] = ft_wrench.body2Force.X();
+      ft->force[1] = ft_wrench.body2Force.Y();
+      ft->force[2] = ft_wrench.body2Force.Z();
+      ft->torque[0] = ft_wrench.body2Torque.X();
+      ft->torque[1] = ft_wrench.body2Torque.Y();
+      ft->torque[2] = ft_wrench.body2Torque.Z();
+    #endif
 
     // Transform to sensor frame
     Eigen::MatrixXd transform(6, 6);
