@@ -17,7 +17,7 @@
   <depend>joint_limits_interface</depend>
   <depend>control_toolbox</depend>
   <depend>gazebo_ros_control</depend>
-  <depend>gazebo</depend>
+  <depend>gazebo8</depend>
   <depend>cmake_modules</depend>
   <depend>eigen</depend>
   <depend>dynamic_introspection</depend>
